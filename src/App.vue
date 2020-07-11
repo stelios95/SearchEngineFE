@@ -22,6 +22,12 @@
             </b-form>
           </b-col>
         </b-row>
+        <b-row class="justify-content-center mt-3">
+          <b-col>
+            <b-button class="mr-2" variant="outline-secondary">Customize search</b-button>
+            <b-button variant="outline-secondary">I'm feeling lucky</b-button>
+          </b-col>
+        </b-row>
       </div>
     </b-container>
   </div>
