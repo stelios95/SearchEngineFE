@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <!-- :style="{'background-image': `url(${require('./assets/landscape2.jpg')})`}" -->
     <b-container
       class="vh-100 text-center justify-content-center align-items-center"
       style="display: flex"
@@ -7,7 +8,7 @@
       <div id="content" style="width:100%">
         <b-row class="justify-content-center">
           <b-col>
-            <h1>Search anything :)</h1>
+            <h1 :style="{textStyle}">Search anything :)</h1>
           </b-col>
         </b-row>
         <b-row class="justify-content-center">
@@ -24,8 +25,8 @@
         </b-row>
         <b-row class="justify-content-center mt-3">
           <b-col>
-            <b-button class="mr-2" variant="outline-secondary">Customize search</b-button>
-            <b-button variant="outline-secondary">I'm feeling lucky</b-button>
+            <b-button class="mr-2" variant="info">Customize search</b-button>
+            <b-button variant="info">I'm feeling lucky</b-button>
           </b-col>
         </b-row>
       </div>
@@ -34,7 +35,18 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      hasBackground: false,
+    };
+  },
+  computed: {
+    textStyle() {
+      return this.hasBackground ? "#color: #d3d5de" : "#color: #f5f6f7";
+    },
+  },
+};
 </script>
 
 <style>
