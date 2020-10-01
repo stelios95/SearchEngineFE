@@ -1,22 +1,30 @@
 <template>
-  <div id="app" v-bind:style="{backgroundImage: bgrdImageUrl }">
+  <div id="app" v-bind:style="{ backgroundImage: bgrdImageUrl }">
     <b-container
       class="vh-100 text-center justify-content-center align-items-center"
       style="display: flex"
     >
-      <div id="content" style="width:100%">
+      <div id="content" style="width: 100%">
         <b-row class="justify-content-center">
           <b-col>
-            <h1 v-bind:style="{color: textStyle}">Search anything :)</h1>
+            <h1 v-bind:style="{ color: textStyle }">Search anything :)</h1>
           </b-col>
         </b-row>
         <b-row class="justify-content-center">
           <b-col>
-            <b-form>
-              <b-input-group style="margin : auto; width : 50%">
-                <b-form-input id="searchInput" type="text" required placeholder="Search here..."></b-form-input>
+            <b-form @submit="onSearchSubmit">
+              <b-input-group style="margin: auto; width: 50%">
+                <b-form-input
+                  v:model="searchTerm"
+                  id="searchInput"
+                  type="text"
+                  required
+                  placeholder="Search here..."
+                ></b-form-input>
                 <b-input-group-append>
-                  <b-button type="submit" name="search" variant="primary">Go!</b-button>
+                  <b-button type="submit" name="search" variant="primary"
+                    >Go!</b-button
+                  >
                 </b-input-group-append>
               </b-input-group>
             </b-form>
@@ -24,7 +32,9 @@
         </b-row>
         <b-row class="justify-content-center mt-3">
           <b-col>
-            <b-button class="mr-2" v-b-toggle.sidebar-1 variant="info">Customize search</b-button>
+            <b-button class="mr-2" v-b-toggle.sidebar-1 variant="info"
+              >Customize search</b-button
+            >
             <b-button variant="info">I'm feeling lucky</b-button>
           </b-col>
         </b-row>
@@ -32,7 +42,11 @@
         <b-sidebar id="sidebar-1" title="Customize search" shadow>
           <div class="px-3 py-2">
             <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-              <b-form-group id="input-group-1" label="Select Background:" label-for="input-1">
+              <b-form-group
+                id="input-group-1"
+                label="Select Background:"
+                label-for="input-1"
+              >
                 <b-form-select
                   id="input-1"
                   v-model="form.bgrdImage"
@@ -40,7 +54,12 @@
                   required
                 ></b-form-select>
               </b-form-group>
-              <b-button type="submit" name="submitCustomization" variant="primary">Submit</b-button>
+              <b-button
+                type="submit"
+                name="submitCustomization"
+                variant="primary"
+                >Submit</b-button
+              >
               <b-button type="reset" variant="danger">Reset</b-button>
             </b-form>
           </div>
@@ -65,9 +84,23 @@ export default {
       ],
       show: true,
       bgrdImageUrl: "",
+      searchTerm: "",
+      searchResults: null,
     };
   },
   methods: {
+    async onSearchSubmit(ev) {
+      ev.preventDefault();
+      try {
+        const response = await this.axios.get(
+          "http://localhost:5000/searchApi/search",
+          this.searchTerm
+        );
+        console.log(JSON.stringify(response));
+      } catch (err) {
+        console.log(err);
+      }
+    },
     onSubmit(ev) {
       ev.preventDefault();
       this.hasBackground = this.form.bgrdImage ? true : false;
