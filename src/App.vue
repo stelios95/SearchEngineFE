@@ -15,11 +15,11 @@
             <b-form @submit="onSearchSubmit">
               <b-input-group style="margin: auto; width: 50%">
                 <b-form-input
-                  v:model="searchTerm"
+                  v-model="searchRequest.searchTerm"
                   id="searchInput"
                   type="text"
                   required
-                  placeholder="Search here..."
+                  placeholder="Type your search term here..."
                 ></b-form-input>
                 <b-input-group-append>
                   <b-button type="submit" name="search" variant="primary"
@@ -84,7 +84,9 @@ export default {
       ],
       show: true,
       bgrdImageUrl: "",
-      searchTerm: "",
+      searchRequest: {
+        searchTerm: "",
+      },
       searchResults: null,
     };
   },
@@ -92,9 +94,9 @@ export default {
     async onSearchSubmit(ev) {
       ev.preventDefault();
       try {
-        const response = await this.axios.get(
+        const response = await this.axios.post(
           "http://localhost:5000/searchApi/search",
-          this.searchTerm
+          this.searchRequest
         );
         console.log(JSON.stringify(response));
       } catch (err) {
