@@ -130,7 +130,7 @@ export default {
     },
 
     luckyRedirect() {
-      if (this.searchResults) {
+      if (this.searchResults.data.length) {
         const url = this.searchResults.data[0].loc;
         window.location.href = url;
       }
