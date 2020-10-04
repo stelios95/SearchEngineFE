@@ -121,6 +121,7 @@ export default {
         this.bgrdImageUrl = `url(${require("./assets/landscape1.jpg")})`;
       if (this.form.bgrdImage === 2)
         this.bgrdImageUrl = `url(${require("./assets/landscape2.jpg")})`;
+      localStorage.bgrdImageUrl = this.bgrdImageUrl;
     },
 
     luckySearch() {
@@ -131,7 +132,6 @@ export default {
     luckyRedirect() {
       if (this.searchResults) {
         const url = this.searchResults.data[0].loc;
-        console.log(url);
         window.location.href = url;
       }
     },
@@ -156,6 +156,13 @@ export default {
     textStyle() {
       return this.hasBackground ? "#f5f6f7" : "#141414";
     },
+  },
+
+  mounted() {
+    if (localStorage.bgrdImageUrl) {
+      this.bgrdImageUrl = localStorage.bgrdImageUrl;
+      this.hasBackground = true;
+    }
   },
 };
 </script>
