@@ -55,6 +55,7 @@
                 ></b-form-select>
               </b-form-group>
               <b-button
+                class="mr-4"
                 type="submit"
                 name="submitCustomization"
                 variant="primary"
