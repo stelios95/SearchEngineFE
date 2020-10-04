@@ -35,7 +35,9 @@
             <b-button class="mr-2" v-b-toggle.sidebar-1 variant="info"
               >Customize search</b-button
             >
-            <b-button variant="info">I'm feeling lucky</b-button>
+            <b-button variant="info" v-on:click="luckySearch"
+              >I'm feeling lucky</b-button
+            >
           </b-col>
         </b-row>
         <!-- CUSTOMIZATION SIDEBAR -->
@@ -85,6 +87,7 @@ export default {
       ],
       show: true,
       bgrdImageUrl: "",
+      isLucky: false,
       searchRequest: {
         searchTerm: "",
       },
@@ -92,23 +95,18 @@ export default {
     };
   },
   methods: {
-    async onSearchSubmit(ev) {
+    onSearchSubmit(ev) {
       ev.preventDefault();
-      try {
-        const response = await this.axios.post(
-          "http://localhost:5000/searchApi/search",
-          this.searchRequest
-        );
-        console.log(JSON.stringify(response));
-      } catch (err) {
-        console.log(err);
-      }
+      this.isLucky = false;
+      this.performSearch();
     },
+
     onSubmit(ev) {
       ev.preventDefault();
       this.hasBackground = this.form.bgrdImage ? true : false;
       this.changeBackgroundImage();
     },
+
     onReset(ev) {
       ev.preventDefault();
       this.form.bgrdImage = 0;
@@ -116,6 +114,7 @@ export default {
         this.show = true;
       });
     },
+
     changeBackgroundImage() {
       if (this.form.bgrdImage === 0) this.bgrdImageUrl = "";
       if (this.form.bgrdImage === 1)
@@ -123,7 +122,36 @@ export default {
       if (this.form.bgrdImage === 2)
         this.bgrdImageUrl = `url(${require("./assets/landscape2.jpg")})`;
     },
+
+    luckySearch() {
+      this.isLucky = true;
+      this.performSearch();
+    },
+
+    luckyRedirect() {
+      if (this.searchResults) {
+        const url = this.searchResults.data[0].loc;
+        console.log(url);
+        window.location.href = url;
+      }
+    },
+
+    async performSearch() {
+      try {
+        const response = await this.axios.post(
+          "http://localhost:5000/searchApi/search",
+          this.searchRequest
+        );
+        this.searchResults = response;
+        console.log(JSON.stringify(response));
+        if (this.isLucky) this.luckyRedirect();
+      } catch (err) {
+        this.searchResults = null;
+        console.log(err);
+      }
+    },
   },
+
   computed: {
     textStyle() {
       return this.hasBackground ? "#f5f6f7" : "#141414";
