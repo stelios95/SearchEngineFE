@@ -43,7 +43,8 @@ export default {
     },
   },
   mounted() {
-    this.performSearch();
+    if (!this.searchConfigs.searchTerm) this.$router.go(-1);
+    else this.performSearch();
   },
 };
 </script>
