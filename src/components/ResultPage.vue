@@ -1,8 +1,13 @@
 <template>
   <div>
-    <h1>Result Page and {{ param }}</h1>
-    <p>Results: {{ searchResults }}</p>
-    <ResultItem></ResultItem>
+    <h1>Results</h1>
+    <p>Found {{ searchResults.data.length }} results</p>
+    <ul>
+      <li v-for="item in searchResults.data" :key="item.title">
+        <ResultItem v-bind:search-item="item"></ResultItem>
+        <br />
+      </li>
+    </ul>
   </div>
 </template>
 
