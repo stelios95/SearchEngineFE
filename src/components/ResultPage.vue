@@ -1,13 +1,38 @@
 <template>
   <div>
-    <h1>Results</h1>
-    <p>Found {{ searchResults.data.length }} results</p>
-    <ul>
-      <li v-for="item in searchResults.data" :key="item.title">
-        <ResultItem v-bind:search-item="item"></ResultItem>
-        <br />
-      </li>
-    </ul>
+    <div>
+      <b-card bg-variant="light">
+        <h3>
+          Results for term : "<b>{{ this.searchConfigs.searchTerm }}</b
+          >"
+        </h3>
+        <p>
+          Found <b>{{ searchResults.data.length }}</b> results
+        </p>
+      </b-card>
+      <br />
+    </div>
+    <div>
+      <ul id="resultsList">
+        <li
+          style="list-style-type: none"
+          v-for="item in itemsForList"
+          :key="item.title"
+        >
+          <ResultItem v-bind:search-item="item"></ResultItem>
+          <br />
+        </li>
+      </ul>
+      <b-pagination
+        v-model="currentPage"
+        :per-page="perPage"
+        :total-rows="searchResults.data.length"
+        first-number
+        last-number
+        aria-controls="resultsList"
+        align="center"
+      ></b-pagination>
+    </div>
   </div>
 </template>
 
@@ -18,8 +43,9 @@ export default {
   props: ["searchConfigs"],
   data() {
     return {
-      param: this.searchConfigs,
       searchResults: null,
+      perPage: 10,
+      currentPage: 1,
     };
   },
   methods: {
@@ -50,6 +76,14 @@ export default {
   mounted() {
     if (!this.searchConfigs.searchTerm) this.$router.go(-1);
     else this.performSearch();
+  },
+  computed: {
+    itemsForList() {
+      return this.searchResults.data.slice(
+        (this.currentPage - 1) * this.perPage,
+        this.currentPage * this.perPage
+      );
+    },
   },
 };
 </script>

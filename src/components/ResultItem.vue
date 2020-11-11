@@ -1,9 +1,9 @@
 <template>
   <div>
-    <b-card bg-variant="light">
+    <b-card bg-variant="light" style="max-width: 60rem">
       <b-card-text>
         <a :href="resultItem.loc"
-          ><h4>{{ resultItem.title }}</h4></a
+          ><h6>{{ resultItem.title }}</h6></a
         >
       </b-card-text>
     </b-card>
