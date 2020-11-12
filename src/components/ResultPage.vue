@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       searchResults: null,
-      perPage: 10,
+      perPage: 5,
       currentPage: 1,
     };
   },
@@ -56,7 +56,7 @@ export default {
           this.searchConfigs
         );
         this.searchResults = response;
-        console.log(JSON.stringify(response));
+        console.log(JSON.stringify(this.searchResults.data));
         if (this.searchConfigs.isLucky) this.luckyRedirect();
       } catch (err) {
         this.searchResults = null;
