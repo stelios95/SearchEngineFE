@@ -1,6 +1,6 @@
 import Vue from "vue";
 import App from "./App.vue";
-import BootstrapVue from "bootstrap-vue/dist/bootstrap-vue.esm";
+import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
 import VueRouter from "vue-router";
 
 import "bootstrap/dist/css/bootstrap.css";
@@ -12,6 +12,7 @@ import HomePage from "./components/HomePage.vue";
 import ResultPage from "./components/ResultPage.vue";
 
 Vue.use(BootstrapVue);
+Vue.use(BootstrapVueIcons);
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;

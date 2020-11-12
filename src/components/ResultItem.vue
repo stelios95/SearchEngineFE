@@ -1,10 +1,17 @@
 <template>
-  <a class="link-color" :href="resultItem.loc">
-    <b-card bg-variant="light" style="max-width: 60rem">
+  <a
+    class="link-color"
+    style="display: block; width: 50rem"
+    :href="resultItem.loc"
+  >
+    <b-card bg-variant="light" border-variant="dark" style="max-width: 50rem">
       <b-card-text>
         <h6>{{ resultItem.title }}</h6>
-        <p>{{ resultItem.loc }}</p>
-        <p>Date : {{ resultItem.lastmod.substring(0, 10) }}</p>
+        <p><b-icon icon="link45deg"></b-icon> {{ resultItem.loc }}</p>
+        <p>
+          <b-icon icon="calendar-date"></b-icon>
+          {{ resultItem.lastmod.substring(0, 10) }}
+        </p>
       </b-card-text>
     </b-card>
   </a>

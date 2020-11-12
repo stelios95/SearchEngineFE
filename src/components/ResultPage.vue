@@ -1,13 +1,15 @@
 <template>
   <div>
     <div>
-      <b-card bg-variant="light">
-        <h3>
+      <b-card class="header-card rounded-0">
+        <h3 class="header-text">
           Results for term : "<b>{{ this.searchConfigs.searchTerm }}</b
           >"
+          <b-icon icon="search"></b-icon>
         </h3>
-        <p>
+        <p class="header-text">
           Found <b>{{ searchResults.data.length }}</b> results
+          <b-icon icon="check"></b-icon>
         </p>
       </b-card>
       <br />
@@ -31,7 +33,11 @@
         last-number
         aria-controls="resultsList"
         align="center"
+        class="custom-pagination"
       ></b-pagination>
+    </div>
+    <div class="footer">
+      Asterios Ntinos Bachelor Dissertation 2021 University of Macedonia
     </div>
   </div>
 </template>
@@ -89,4 +95,27 @@ export default {
 </script>
 
 <style>
+.header-card {
+  background-color: #455a64;
+}
+.header-text {
+  color: cornsilk;
+}
+
+.page-item.active .page-link {
+  background-color: #9e9e9e !important;
+}
+
+.page-link {
+  color: black;
+}
+
+.footer {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #455a64;
+  color: white;
+  text-align: center;
+}
 </style>
