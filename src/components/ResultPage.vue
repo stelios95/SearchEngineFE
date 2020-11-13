@@ -74,9 +74,8 @@ export default {
           "http://localhost:5000/searchApi/search",
           this.searchConfigs
         );
-        this.searchResults = response;
-        console.log(JSON.stringify(this.searchResults.data));
-        if (this.searchConfigs.isLucky) this.luckyRedirect();
+        if (this.searchConfigs.isLucky) this.luckyRedirect(response);
+        else this.searchResults = response;
       } catch (err) {
         this.searchResults = null;
         console.log(err);
@@ -85,9 +84,9 @@ export default {
       }
     },
 
-    luckyRedirect() {
-      if (this.searchResults.data.length) {
-        const url = this.searchResults.data[0].loc;
+    luckyRedirect(res) {
+      if (res.data.length) {
+        const url = res.data[0].loc;
         window.location.href = url;
       }
     },
