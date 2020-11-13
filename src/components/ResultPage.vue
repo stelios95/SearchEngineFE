@@ -35,6 +35,7 @@
         align="center"
         class="custom-pagination"
       ></b-pagination>
+      <br />
     </div>
     <div class="footer">
       Asterios Ntinos Bachelor Dissertation 2021 University of Macedonia
@@ -111,6 +112,7 @@ export default {
 }
 
 .footer {
+  position: fixed;
   left: 0;
   bottom: 0;
   width: 100%;
