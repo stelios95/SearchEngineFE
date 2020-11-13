@@ -25,7 +25,19 @@
           <br />
         </li>
       </ul>
+      <b-container v-if="!searchResults.data.length">
+        <h3 class="not-found-text">
+          Unfortunately we could not find any page containing the term you
+          searched for...
+        </h3>
+        <h1>:(</h1>
+        <a class="link-color" href="/"
+          ><h4>Click here to search for something else</h4></a
+        >
+      </b-container>
+
       <b-pagination
+        v-if="searchResults.data.length"
         v-model="currentPage"
         :per-page="perPage"
         :total-rows="searchResults.data.length"
@@ -103,6 +115,10 @@ export default {
   color: cornsilk;
 }
 
+.not-found-text {
+  color: #455a64;
+}
+
 .page-item.active .page-link {
   background-color: #9e9e9e !important;
 }
@@ -119,5 +135,13 @@ export default {
   background-color: #455a64;
   color: white;
   text-align: center;
+}
+
+.link-color {
+  color: #212121 !important;
+}
+.link-color:hover,
+.text-my-own-color:active {
+  color: #455a64 !important;
 }
 </style>
