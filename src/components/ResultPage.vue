@@ -1,19 +1,41 @@
 <template>
   <div>
-    <div>
-      <b-card class="header-card rounded-0">
-        <h3 class="header-text">
-          Results for term : "<b>{{ this.searchConfigs.searchTerm }}</b
-          >"
-          <b-icon icon="search"></b-icon>
-        </h3>
-        <p class="header-text">
-          Found <b>{{ searchResults.data.length }}</b> results
-          <b-icon icon="check"></b-icon>
-        </p>
-      </b-card>
-      <br />
+    <div class="header-card p-3">
+      <b-container>
+        <b-row class="vh-10" align-v="center">
+          <b-col cols="6">
+            <h3 class="header-text">
+              Results for term : "<b>{{ this.searchConfigs.searchTerm }}</b
+              >"
+              <b-icon icon="search"></b-icon>
+            </h3>
+            <p class="header-text">
+              Found <b>{{ searchResults.data.length }}</b> results
+              <b-icon icon="check"></b-icon>
+            </p>
+          </b-col>
+          <b-col cols="6">
+            <b-form class="text-right" @submit="onSearchSubmit">
+              <b-input-group style="margin: auto; width: 80%">
+                <b-form-input
+                  v-model="newSearchTerm"
+                  id="searchInput"
+                  type="text"
+                  required
+                  placeholder="Search again..."
+                ></b-form-input>
+                <b-input-group-append>
+                  <b-button type="submit" name="search" variant="primary"
+                    >Go!</b-button
+                  >
+                </b-input-group-append>
+              </b-input-group>
+            </b-form>
+          </b-col>
+        </b-row>
+      </b-container>
     </div>
+    <br />
     <div>
       <ul id="resultsList">
         <li
@@ -31,9 +53,6 @@
           searched for...
         </h3>
         <h1>:(</h1>
-        <a class="link-color" href="/"
-          ><h4>Click here to search for something else</h4></a
-        >
       </b-container>
 
       <b-pagination
@@ -47,6 +66,7 @@
         align="center"
         class="custom-pagination"
       ></b-pagination>
+
       <br />
     </div>
     <div class="footer">
@@ -65,6 +85,7 @@ export default {
       searchResults: null,
       perPage: 5,
       currentPage: 1,
+      newSearchTerm: "",
     };
   },
   methods: {
@@ -80,8 +101,14 @@ export default {
         this.searchResults = null;
         console.log(err);
       } finally {
-        console.log("finally");
+        this.loading = false;
       }
+    },
+
+    onSearchSubmit(ev) {
+      ev.preventDefault();
+      this.searchConfigs.searchTerm = this.newSearchTerm;
+      this.performSearch();
     },
 
     luckyRedirect(res) {
@@ -101,6 +128,9 @@ export default {
         (this.currentPage - 1) * this.perPage,
         this.currentPage * this.perPage
       );
+    },
+    isLoading() {
+      return this.loading;
     },
   },
 };

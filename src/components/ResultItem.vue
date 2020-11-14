@@ -1,7 +1,7 @@
 <template>
   <a
     class="link-color"
-    style="display: block; width: 50rem"
+    style="display: block; max-width: 50rem"
     :href="resultItem.loc"
   >
     <b-card bg-variant="light" border-variant="dark" style="max-width: 50rem">
