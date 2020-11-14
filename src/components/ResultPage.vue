@@ -37,6 +37,9 @@
     </div>
     <br />
     <div>
+      <div v-if="loading" class="text-center m-2">
+        <b-spinner></b-spinner>
+      </div>
       <ul id="resultsList">
         <li
           style="list-style-type: none"
@@ -86,11 +89,13 @@ export default {
       perPage: 5,
       currentPage: 1,
       newSearchTerm: "",
+      loading: true,
     };
   },
   methods: {
     async performSearch() {
       try {
+        this.loading = true;
         const response = await this.axios.post(
           "http://localhost:5000/searchApi/search",
           this.searchConfigs
@@ -101,6 +106,7 @@ export default {
         this.searchResults = null;
         console.log(err);
       } finally {
+        console.log("finaly");
         this.loading = false;
       }
     },
