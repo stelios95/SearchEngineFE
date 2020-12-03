@@ -40,14 +40,9 @@
       <div v-if="loading" class="text-center m-2">
         <b-spinner></b-spinner>
       </div>
-      <ul id="resultsList">
-        <li
-          style="list-style-type: none"
-          v-for="item in itemsForList"
-          :key="item.title"
-        >
-          <ResultItem v-bind:search-item="item"></ResultItem>
-          <br />
+      <ul style="list-style-type: none; padding: 0" id="resultsList">
+        <li v-for="item in itemsForList" :key="item.title">
+          <ResultItem class="m-4" v-bind:search-item="item"></ResultItem>
         </li>
       </ul>
       <b-container v-if="!searchResults.data.length">
@@ -67,12 +62,10 @@
         last-number
         aria-controls="resultsList"
         align="center"
-        class="custom-pagination"
+        class="custom-pagination mb-5"
       ></b-pagination>
-
-      <br />
     </div>
-    <div class="footer">
+    <div class="footer mt-2">
       Asterios Ntinos Bachelor Dissertation 2021 University of Macedonia
     </div>
   </div>
