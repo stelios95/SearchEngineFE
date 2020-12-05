@@ -1,70 +1,79 @@
 <template>
   <div>
-    <div class="header-card p-3">
-      <b-container>
-        <b-row class="vh-10" align-v="center">
-          <b-col cols="6">
-            <h3 class="header-text">
-              Results for term : "<b>{{ this.searchConfigs.searchTerm }}</b
-              >"
-              <b-icon icon="search"></b-icon>
-            </h3>
-            <p class="header-text">
-              Found <b>{{ searchResults.data.length }}</b> results
-              <b-icon icon="check"></b-icon>
-            </p>
-          </b-col>
-          <b-col cols="6">
-            <b-form class="text-right" @submit="onSearchSubmit">
-              <b-input-group style="margin: auto; width: 80%">
-                <b-form-input
-                  v-model="newSearchTerm"
-                  id="searchInput"
-                  type="text"
-                  required
-                  placeholder="Search again..."
-                ></b-form-input>
-                <b-input-group-append>
-                  <b-button type="submit" name="search" variant="primary"
-                    >Go!</b-button
-                  >
-                </b-input-group-append>
-              </b-input-group>
-            </b-form>
-          </b-col>
-        </b-row>
-      </b-container>
+    <div v-if="loading" class="spinner">
+      <b-spinner></b-spinner>
     </div>
-    <br />
-    <div>
-      <div v-if="loading" class="text-center m-2">
-        <b-spinner></b-spinner>
+    <div v-else-if="error">
+      <h3 style="color: red">Error: {{ error.message }}</h3>
+    </div>
+    <div v-else>
+      <div class="header-card p-3">
+        <b-container>
+          <b-row class="vh-10" align-v="center">
+            <b-col cols="6">
+              <h3 class="header-text">
+                Results for term : "<b>{{ this.searchConfigs.searchTerm }}</b
+                >"
+                <b-icon icon="search"></b-icon>
+              </h3>
+              <p class="header-text">
+                Found <b>{{ searchResults.data.length }}</b> results
+                <b-icon icon="check"></b-icon>
+              </p>
+            </b-col>
+            <b-col cols="6">
+              <b-form class="text-right" @submit="onSearchSubmit">
+                <b-input-group style="margin: auto; width: 80%">
+                  <b-form-input
+                    v-model="newSearchTerm"
+                    id="searchInput"
+                    type="text"
+                    required
+                    placeholder="Search again..."
+                  ></b-form-input>
+                  <b-input-group-append>
+                    <b-button type="submit" name="search" variant="primary"
+                      >Go!</b-button
+                    >
+                  </b-input-group-append>
+                </b-input-group>
+              </b-form>
+            </b-col>
+          </b-row>
+        </b-container>
       </div>
-      <ul style="list-style-type: none; padding: 0" id="resultsList">
-        <li v-for="item in itemsForList" :key="item.title">
-          <ResultItem class="m-4" v-bind:search-item="item"></ResultItem>
-        </li>
-      </ul>
-      <b-container v-if="!searchResults.data.length">
-        <h3 class="not-found-text">
-          Unfortunately we could not find any page containing the term you
-          searched for...
-        </h3>
-        <h1>:(</h1>
-      </b-container>
+      <br />
+      <div>
+        <div v-if="loading" class="spinner">
+          <b-spinner></b-spinner>
+        </div>
+        <ul style="list-style-type: none; padding: 0" id="resultsList">
+          <li v-for="item in itemsForList" :key="item.title">
+            <ResultItem class="m-4" v-bind:search-item="item"></ResultItem>
+          </li>
+        </ul>
+        <b-container v-if="!searchResults.data.length">
+          <h3 class="not-found-text">
+            Unfortunately we could not find any page containing the term you
+            searched for...
+          </h3>
+          <h1>:(</h1>
+        </b-container>
 
-      <b-pagination
-        v-if="searchResults.data.length"
-        v-model="currentPage"
-        :per-page="perPage"
-        :total-rows="searchResults.data.length"
-        first-number
-        last-number
-        aria-controls="resultsList"
-        align="center"
-        class="custom-pagination mb-5"
-      ></b-pagination>
+        <b-pagination
+          v-if="searchResults.data.length"
+          v-model="currentPage"
+          :per-page="perPage"
+          :total-rows="searchResults.data.length"
+          first-number
+          last-number
+          aria-controls="resultsList"
+          align="center"
+          class="custom-pagination mb-5"
+        ></b-pagination>
+      </div>
     </div>
+
     <div class="footer mt-2">
       Asterios Ntinos Bachelor Dissertation 2021 University of Macedonia
     </div>
@@ -83,6 +92,7 @@ export default {
       currentPage: 1,
       newSearchTerm: "",
       loading: true,
+      error: null,
     };
   },
   methods: {
@@ -97,7 +107,7 @@ export default {
         else this.searchResults = response;
       } catch (err) {
         this.searchResults = null;
-        console.log(err);
+        this.error = err;
       } finally {
         console.log("finaly");
         this.loading = false;
@@ -123,10 +133,12 @@ export default {
   },
   computed: {
     itemsForList() {
-      return this.searchResults.data.slice(
-        (this.currentPage - 1) * this.perPage,
-        this.currentPage * this.perPage
-      );
+      return this.searchResults
+        ? this.searchResults.data.slice(
+            (this.currentPage - 1) * this.perPage,
+            this.currentPage * this.perPage
+          )
+        : [];
     },
     isLoading() {
       return this.loading;
@@ -171,5 +183,16 @@ export default {
 .link-color:hover,
 .text-my-own-color:active {
   color: #455a64 !important;
+}
+
+.spinner {
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  top: 50%;
+  left: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
+  background-size: 100%;
 }
 </style>
