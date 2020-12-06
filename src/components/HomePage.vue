@@ -81,37 +81,70 @@
         <div class="px-3 py-2">
           <b-form @submit="onSubmit" @reset="onReset" v-if="show">
             <b-form-group
-              id="input-group-1"
-              label="Select Background:"
+              label-cols-sm="4"
+              label="Background:"
+              label-align-sm="left"
               label-for="input-1"
             >
               <b-form-select
+                label="label"
                 id="input-1"
                 v-model="form.bgrdImage"
                 :options="bgrdImageOptions"
                 required
               ></b-form-select>
-
-              <b-form-checkbox
-                style="text-align: left"
-                class="mt-2"
-                id="checkbox-1"
-                v-model="searchConfigs.isExactTermSearch"
-                name="checkbox-1"
-                value="isExactTerm"
-                unchecked-value="isNotExactTerm"
-              >
-                Search for Exact Term
-              </b-form-checkbox>
             </b-form-group>
-            <b-button
-              class="mr-4"
-              type="submit"
-              name="submitCustomization"
-              variant="primary"
-              >Submit</b-button
+            <b-form-group
+              label-cols-sm="4"
+              label="Sort By:"
+              label-align-sm="left"
+              label-for="input-2"
             >
-            <b-button type="reset" variant="danger">Reset</b-button>
+              <b-form-select
+                class="mt-2"
+                id="input-2"
+                v-model="searchConfigs.sortBy"
+                :options="sortByOptions"
+                required
+              ></b-form-select>
+            </b-form-group>
+            <b-form-group
+              label-cols-sm="4"
+              label="Timeframe:"
+              label-align-sm="left"
+              label-for="input-2"
+            >
+              <b-form-select
+                class="mt-2"
+                id="input-3"
+                v-model="searchConfigs.timeframe"
+                :options="timeframeOptions"
+                required
+              ></b-form-select>
+            </b-form-group>
+
+            <b-form-checkbox
+              style="text-align: left"
+              class="mt-2 mb-5"
+              id="checkbox-1"
+              v-model="searchConfigs.isExactTermSearch"
+              name="checkbox-1"
+              value="true"
+              unchecked-value="false"
+            >
+              Search for Exact Term
+            </b-form-checkbox>
+            <div class="mt-2">
+              <b-button
+                v-b-toggle.sidebar-1
+                class="mr-4"
+                type="submit"
+                name="submitCustomization"
+                variant="primary"
+                >Submit</b-button
+              >
+              <b-button type="reset" variant="danger">Reset</b-button>
+            </div>
           </b-form>
         </div>
       </b-sidebar>
@@ -139,12 +172,25 @@ export default {
         { value: 1, text: "Theme 1" },
         { value: 2, text: "Theme 2" },
       ],
+      sortByOptions: [
+        { value: "relevance", text: "Relevance" },
+        { value: "dateOld", text: "Date (Old First)" },
+        { value: "dateNew", text: "Date (New First)" },
+      ],
+      timeframeOptions: [
+        { value: "today", text: "Today" },
+        { value: "lastMonth", text: "Last Month" },
+        { value: "lastYear", text: "Last Year" },
+        { value: "allTime", text: "All Time" },
+      ],
       show: true,
       bgrdImageUrl: "",
       isLucky: false,
       searchConfigs: {
         searchTerm: "",
-        isExactTermSearch: "isNotExactTerm",
+        isExactTermSearch: "false",
+        sortBy: "relevance",
+        timeframe: "allTime",
       },
       searchResults: null,
     };
@@ -170,6 +216,8 @@ export default {
       ev.preventDefault();
       this.form.bgrdImage = this.imageToBeReseted;
       this.searchConfigs.isExactTermSearch = "isNotExactTerm";
+      this.searchConfigs.sortBy = "relevance";
+      this.searchConfigs.timeframe = "allTime";
       this.$nextTick(() => {
         this.show = true;
       });
@@ -201,7 +249,6 @@ export default {
       return navigator.userAgent.match(/Android/i) ||
         navigator.userAgent.match(/webOS/i) ||
         navigator.userAgent.match(/iPhone/i) ||
-        navigator.userAgent.match(/iPad/i) ||
         navigator.userAgent.match(/iPod/i) ||
         navigator.userAgent.match(/BlackBerry/i) ||
         navigator.userAgent.match(/Windows Phone/i)
