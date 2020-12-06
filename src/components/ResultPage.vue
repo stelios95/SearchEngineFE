@@ -8,7 +8,41 @@
     </div>
     <div v-else>
       <div class="header-card p-3">
-        <b-container>
+        <b-container v-if="isMobile">
+          <b-row>
+            <h3 class="header-text">
+              Results for term : "<b>{{ this.searchConfigs.searchTerm }}</b
+              >"
+              <b-icon icon="search"></b-icon>
+            </h3>
+          </b-row>
+          <b-row>
+            <p class="header-text">
+              Found <b>{{ searchResults.data.length }}</b> results
+              <b-icon icon="check"></b-icon>
+            </p>
+          </b-row>
+          <b-row>
+            <b-form @submit="onSearchSubmit">
+              <b-input-group style="width: 100%">
+                <b-form-input
+                  v-model="newSearchTerm"
+                  id="searchInput"
+                  type="text"
+                  required
+                  placeholder="Search again..."
+                ></b-form-input>
+                <b-input-group-append>
+                  <b-button type="submit" name="search" variant="primary"
+                    >Go!</b-button
+                  >
+                </b-input-group-append>
+              </b-input-group>
+            </b-form>
+          </b-row>
+        </b-container>
+        <!-- if its not mobile -->
+        <b-container v-else>
           <b-row class="vh-10" align-v="center">
             <b-col cols="6">
               <h3 class="header-text">
@@ -21,7 +55,7 @@
                 <b-icon icon="check"></b-icon>
               </p>
             </b-col>
-            <b-col cols="6">
+            <b-col v-if="!isMobile" cols="6">
               <b-form class="text-right" @submit="onSearchSubmit">
                 <b-input-group style="margin: auto; width: 80%">
                   <b-form-input
@@ -44,33 +78,35 @@
       </div>
       <br />
       <div>
-        <div v-if="loading" class="spinner">
+        <div v-if="loadingNew" style="text-align: center" class="mt-3">
           <b-spinner></b-spinner>
         </div>
-        <ul style="list-style-type: none; padding: 0" id="resultsList">
-          <li v-for="item in itemsForList" :key="item.title">
-            <ResultItem class="m-4" v-bind:search-item="item"></ResultItem>
-          </li>
-        </ul>
-        <b-container v-if="!searchResults.data.length">
-          <h3 class="not-found-text">
-            Unfortunately we could not find any page containing the term you
-            searched for...
-          </h3>
-          <h1>:(</h1>
-        </b-container>
+        <div v-else>
+          <ul style="list-style-type: none; padding: 0" id="resultsList">
+            <li v-for="item in itemsForList" :key="item.title">
+              <ResultItem class="m-4" v-bind:search-item="item"></ResultItem>
+            </li>
+          </ul>
+          <b-container v-if="!searchResults.data.length">
+            <h3 class="not-found-text">
+              Unfortunately we could not find any page containing the term you
+              searched for...
+            </h3>
+            <h1>:(</h1>
+          </b-container>
 
-        <b-pagination
-          v-if="searchResults.data.length"
-          v-model="currentPage"
-          :per-page="perPage"
-          :total-rows="searchResults.data.length"
-          first-number
-          last-number
-          aria-controls="resultsList"
-          align="center"
-          class="custom-pagination mb-5"
-        ></b-pagination>
+          <b-pagination
+            v-if="searchResults.data.length"
+            v-model="currentPage"
+            :per-page="perPage"
+            :total-rows="searchResults.data.length"
+            first-number
+            last-number
+            aria-controls="resultsList"
+            align="center"
+            class="mb-5"
+          ></b-pagination>
+        </div>
       </div>
     </div>
 
@@ -92,13 +128,14 @@ export default {
       currentPage: 1,
       newSearchTerm: "",
       loading: true,
+      loadingNew: false,
       error: null,
     };
   },
   methods: {
-    async performSearch() {
+    async performSearch(isNewSearch) {
       try {
-        this.loading = true;
+        isNewSearch ? (this.loadingNew = true) : (this.loading = true);
         const response = await this.axios.post(
           "http://localhost:5000/searchApi/search",
           this.searchConfigs
@@ -111,13 +148,14 @@ export default {
       } finally {
         console.log("finaly");
         this.loading = false;
+        this.loadingNew = false;
       }
     },
 
     onSearchSubmit(ev) {
       ev.preventDefault();
       this.searchConfigs.searchTerm = this.newSearchTerm;
-      this.performSearch();
+      this.performSearch(true);
     },
 
     luckyRedirect(res) {
@@ -143,6 +181,17 @@ export default {
     isLoading() {
       return this.loading;
     },
+    isMobile() {
+      return navigator.userAgent.match(/Android/i) ||
+        navigator.userAgent.match(/webOS/i) ||
+        navigator.userAgent.match(/iPhone/i) ||
+        navigator.userAgent.match(/iPad/i) ||
+        navigator.userAgent.match(/iPod/i) ||
+        navigator.userAgent.match(/BlackBerry/i) ||
+        navigator.userAgent.match(/Windows Phone/i)
+        ? true
+        : false;
+    },
   },
 };
 </script>
@@ -159,9 +208,9 @@ export default {
   color: #455a64;
 }
 
-.page-item.active .page-link {
+/* .page-item.active .page-link {
   background-color: #9e9e9e !important;
-}
+} */
 
 .page-link {
   color: black;
