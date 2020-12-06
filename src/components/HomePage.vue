@@ -91,6 +91,18 @@
                 :options="bgrdImageOptions"
                 required
               ></b-form-select>
+
+              <b-form-checkbox
+                style="text-align: left"
+                class="mt-2"
+                id="checkbox-1"
+                v-model="searchConfigs.isExactTermSearch"
+                name="checkbox-1"
+                value="isExactTerm"
+                unchecked-value="isNotExactTerm"
+              >
+                Search for Exact Term
+              </b-form-checkbox>
             </b-form-group>
             <b-button
               class="mr-4"
@@ -111,7 +123,14 @@
 export default {
   data() {
     return {
+      imagesMapping: {
+        "": 0,
+        landscape1: 1,
+        landscape2: 2,
+        landscape3: 3,
+      },
       hasBackground: false,
+      imageToBeReseted: 0,
       form: {
         bgrdImage: 0,
       },
@@ -125,6 +144,7 @@ export default {
       isLucky: false,
       searchConfigs: {
         searchTerm: "",
+        isExactTermSearch: "isNotExactTerm",
       },
       searchResults: null,
     };
@@ -142,12 +162,14 @@ export default {
     onSubmit(ev) {
       ev.preventDefault();
       this.hasBackground = this.form.bgrdImage ? true : false;
+      this.imageToBeReseted = this.form.bgrdImage;
       this.changeBackgroundImage();
     },
 
     onReset(ev) {
       ev.preventDefault();
-      this.form.bgrdImage = 0;
+      this.form.bgrdImage = this.imageToBeReseted;
+      this.searchConfigs.isExactTermSearch = "isNotExactTerm";
       this.$nextTick(() => {
         this.show = true;
       });
@@ -192,6 +214,10 @@ export default {
     if (localStorage.bgrdImageUrl) {
       this.bgrdImageUrl = localStorage.bgrdImageUrl;
       this.hasBackground = true;
+      this.form.bgrdImage = this.imagesMapping[
+        this.bgrdImageUrl.substring(9, 19)
+      ];
+      this.imageToBeReseted = this.form.bgrdImage;
     }
   },
 };
