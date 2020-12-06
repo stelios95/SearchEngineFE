@@ -235,13 +235,9 @@ export default {
 }
 
 .spinner {
-  position: absolute;
-  height: 100px;
-  width: 100px;
+  position: fixed;
   top: 50%;
   left: 50%;
-  margin-left: -50px;
-  margin-top: -50px;
-  background-size: 100%;
+  transform: translate(-50%, -50%);
 }
 </style>
