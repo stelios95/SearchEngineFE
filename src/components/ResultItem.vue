@@ -10,8 +10,9 @@
         <p><b-icon icon="link45deg"></b-icon> {{ resultItem.loc }}</p>
         <p>
           <b-icon icon="calendar-date"></b-icon>
-          {{ resultItem.lastmod.substring(0, 10) }}
+          {{ resultItem.lastmod ? resultItem.lastmod.substring(0, 10) : "N/A" }}
         </p>
+        <p>Relevance Score: {{ resultItem.score }}</p>
       </b-card-text>
     </b-card>
   </a>
