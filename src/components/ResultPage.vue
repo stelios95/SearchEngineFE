@@ -137,7 +137,7 @@ export default {
       try {
         isNewSearch ? (this.loadingNew = true) : (this.loading = true);
         const response = await this.axios.post(
-          "http://localhost:5000/searchApi/search",
+          "https://bd-client-back-end.herokuapp.com/searchApi/search",
           this.searchConfigs
         );
         if (this.searchConfigs.isLucky) this.luckyRedirect(response);
@@ -166,6 +166,7 @@ export default {
     },
   },
   mounted() {
+    // console.log(JSON.stringify(this.searchConfigs));
     if (!this.searchConfigs.searchTerm) this.$router.go(-1);
     else this.performSearch();
   },

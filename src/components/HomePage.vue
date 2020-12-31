@@ -161,6 +161,8 @@ export default {
         landscape1: 1,
         landscape2: 2,
         landscape3: 3,
+        landscape4: 4,
+        landscape5: 5,
       },
       hasBackground: false,
       imageToBeReseted: 0,
@@ -169,8 +171,11 @@ export default {
       },
       bgrdImageOptions: [
         { value: 0, text: "None" },
-        { value: 1, text: "Theme 1" },
-        { value: 2, text: "Theme 2" },
+        { value: 1, text: "Fields" },
+        { value: 2, text: "Mountain Coast" },
+        { value: 3, text: "Abstract" },
+        { value: 4, text: "Purple" },
+        { value: 5, text: "Full Moon" },
       ],
       sortByOptions: [
         { value: "relevance", text: "Relevance" },
@@ -229,6 +234,12 @@ export default {
         this.bgrdImageUrl = `url(${require("../assets/landscape1.jpg")})`;
       if (this.form.bgrdImage === 2)
         this.bgrdImageUrl = `url(${require("../assets/landscape2.jpg")})`;
+      if (this.form.bgrdImage === 3)
+        this.bgrdImageUrl = `url(${require("../assets/landscape3.jpg")})`;
+      if (this.form.bgrdImage === 4)
+        this.bgrdImageUrl = `url(${require("../assets/landscape4.jpg")})`;
+      if (this.form.bgrdImage === 5)
+        this.bgrdImageUrl = `url(${require("../assets/landscape5.jpg")})`;
       localStorage.bgrdImageUrl = this.bgrdImageUrl;
     },
 
