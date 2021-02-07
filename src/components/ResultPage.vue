@@ -111,7 +111,7 @@
     </div>
 
     <div class="footer mt-2">
-      Asterios Ntinos Bachelor Dissertation 2021 University of Macedonia
+      Asterios Ntinos Bachelor Thesis 2021 University of Macedonia
     </div>
   </div>
 </template>
@@ -201,7 +201,7 @@ export default {
   background-color: #455a64;
 }
 .header-text {
-  color: cornsilk;
+  color: whitesmoke;
 }
 
 .not-found-text {
