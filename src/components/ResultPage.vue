@@ -111,7 +111,7 @@
     </div>
 
     <div class="footer mt-2">
-      Asterios Ntinos Bachelor Thesis 2021 University of Macedonia
+      Asterios Ntinos Bachelor Dissertation 2021 University of Macedonia
     </div>
   </div>
 </template>
@@ -137,7 +137,7 @@ export default {
       try {
         isNewSearch ? (this.loadingNew = true) : (this.loading = true);
         const response = await this.axios.post(
-          "https://localhost:5000/searchApi/search",
+          "https://bd-client-back-end.herokuapp.com/searchApi/search",
           this.searchConfigs
         );
         if (this.searchConfigs.isLucky) this.luckyRedirect(response);
@@ -201,7 +201,7 @@ export default {
   background-color: #455a64;
 }
 .header-text {
-  color: whitesmoke;
+  color: cornsilk;
 }
 
 .not-found-text {
